@@ -4,6 +4,8 @@ import HeroSection from "./HeroSection";
 import MenuComponent from "./MenuComponent";
 import LocationSection from "./LocationSection";
 import AtmosphereGallery from "./AtmosphereGallery";
+import PubTeamGallery from "./PubTeamGallery";
+import StaffGallery from "./StaffGallery";
 import { Button } from "./ui/button";
 import {
   Clock,
@@ -143,6 +145,16 @@ const HomePage = () => {
               </p>
             </motion.div>
             <AtmosphereGallery />
+            
+            {/* Staff Gallery */}
+            <div className="mt-16">
+              <StaffGallery />
+            </div>
+            
+            {/* Pub Team Gallery */}
+            <div className="mt-16">
+              <PubTeamGallery />
+            </div>
           </div>
         </section>
 

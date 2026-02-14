@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 
 interface GalleryImage {
   id: number;
@@ -17,6 +18,16 @@ interface AtmosphereGalleryProps {
 const AtmosphereGallery = ({
   images = defaultImages,
 }: AtmosphereGalleryProps) => {
+  const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
+
+  const handleImageClick = (image: GalleryImage) => {
+    setSelectedImage(image);
+  };
+
+  const handleDialogClose = () => {
+    setSelectedImage(null);
+  };
+
   return (
     <section className="w-full py-16 px-4 md:px-8 bg-background">
       <div className="max-w-7xl mx-auto">
@@ -67,12 +78,15 @@ const AtmosphereGallery = ({
               viewport={{ once: true }}
               className="h-full"
             >
-              <Card className="overflow-hidden h-full bg-card hover:shadow-lg transition-shadow duration-300">
+              <Card
+                className="overflow-hidden h-full bg-card hover:shadow-lg transition-shadow duration-300 cursor-pointer"
+                onClick={() => handleImageClick(image)}
+              >
                 <div className="relative overflow-hidden aspect-[4/3] group">
                   <img
                     src={image.src}
                     alt={image.alt}
-                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110"
                   />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                     <p className="text-white text-sm">{image.caption}</p>
@@ -90,6 +104,28 @@ const AtmosphereGallery = ({
             </motion.div>
           ))}
         </div>
+
+        {/* Full-size image dialog */}
+        <Dialog open={selectedImage !== null} onOpenChange={handleDialogClose}>
+          <DialogContent className="max-w-4xl p-0 overflow-hidden">
+            {selectedImage && (
+              <div className="relative">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.alt}
+                  className="w-full h-auto max-h-[80vh] object-contain"
+                />
+                <div className="absolute bottom-0 left-0 right-0 bg-black/80 p-4">
+                  <h3 className="text-white font-medium mb-1">{selectedImage.alt}</h3>
+                  <p className="text-white/80 text-sm">{selectedImage.caption}</p>
+                  <span className="inline-block mt-2 text-xs px-2 py-1 rounded-full bg-primary/20 text-primary">
+                    {selectedImage.category === "games" ? "Games" : "Nightlife"}
+                  </span>
+                </div>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
 
         {/* Call to action */}
         <div className="mt-12 text-center">
@@ -113,7 +149,7 @@ const AtmosphereGallery = ({
 const defaultImages: GalleryImage[] = [
   {
     id: 1,
-    src: "https://images.unsplash.com/photo-1610297166034-55f21cd157a5?w=800&q=80",
+    src: "/images/staff/3 amigos.png",
     alt: "Pool Tables",
     category: "games",
     caption:
@@ -121,21 +157,21 @@ const defaultImages: GalleryImage[] = [
   },
   {
     id: 2,
-    src: "https://images.unsplash.com/photo-1611254666354-3fe563131d5b?w=800&q=80",
+    src: "/images/staff/3 at hatters.png",
     alt: "Jenga Tower",
     category: "games",
-    caption: "Test your steady hands with our giant Jenga sets.",
+    caption: "Test your steady hands with our giant Jenga sets in our bar setting.",
   },
   {
     id: 3,
-    src: "https://images.unsplash.com/photo-1545128485-c400ce7b23d2?w=800&q=80",
+    src: "/images/staff/3 hatters.png",
     alt: "Ping Pong Tables",
     category: "games",
     caption: "Show off your ping pong skills on our professional tables.",
   },
   {
     id: 4,
-    src: "https://images.unsplash.com/photo-1566417713940-fe7c737a9ef2?w=800&q=80",
+    src: "/images/staff/ChatGPT Image May 17, 2025, 09_42_36 PM.png",
     alt: "Vibrant Bar Area",
     category: "nightlife",
     caption:
@@ -143,7 +179,7 @@ const defaultImages: GalleryImage[] = [
   },
   {
     id: 5,
-    src: "https://images.unsplash.com/photo-1516997121675-4c2d1684aa3e?w=800&q=80",
+    src: "/images/staff/ChatGPT Image May 17, 2025, 09_49_55 PM.png",
     alt: "Lively Dance Floor",
     category: "nightlife",
     caption:
@@ -151,7 +187,7 @@ const defaultImages: GalleryImage[] = [
   },
   {
     id: 6,
-    src: "https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=800&q=80",
+    src: "/images/staff/ChatGPT Image May 18, 2025, 01_23_26 AM.png",
     alt: "Cozy Lounge Area",
     category: "nightlife",
     caption: "Relax in our comfortable lounge areas between games and dancing.",

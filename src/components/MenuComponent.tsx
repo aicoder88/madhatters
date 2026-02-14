@@ -62,7 +62,11 @@ const MenuComponent = ({
           </div>
 
           {foodCategories.map((category) => (
-            <Accordion type="single" collapsible key={category.id}>
+            <Accordion
+              type="multiple"
+              defaultValue={[category.id]}
+              key={category.id}
+            >
               <AccordionItem value={category.id}>
                 <AccordionTrigger className="text-xl font-semibold">
                   {category.name}
